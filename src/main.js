@@ -12,7 +12,7 @@ import {generateNavigationTemplate} from './components/navigation';
 import {sorts} from './components/sort';
 import {generateSortTemplate} from './components/sort';
 
-import {films} from './components/film-card';
+import {films} from './data';
 import {generateFilmListTemplate} from './components/films-list';
 import {generateFilmCardDetailsTemplate} from './components/film-card-details';
 
