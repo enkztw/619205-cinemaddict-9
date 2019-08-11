@@ -1,5 +1,5 @@
 // Genres
-const generateFilmGenreTemplate = (genre) => `<span class="film-details__genre">${genre}</span>`.trim();
+const generateFilmGenreTemplate = (genre) => `<span class="film-details__genre">${genre}</span>`;
 
 const generateFilmGenresTemplate = (genres) => genres.map((genre) => generateFilmGenreTemplate(genre)).join(``);
 
@@ -15,8 +15,7 @@ const generateFilmGenresBlockTemplate = (genres) => {
 };
 
 // Comments
-const generateFilmCommentTemplate = ({author, comment, reaction, ago}) => {
-  const filmCommentTemplate =
+const generateFilmCommentTemplate = ({author, comment, reaction, ago}) =>
   `<li class="film-details__comment">
   <span class="film-details__comment-emoji">
     <img src="./images/emoji/${reaction}.png" width="55" height="55" alt="emoji">
@@ -30,9 +29,6 @@ const generateFilmCommentTemplate = ({author, comment, reaction, ago}) => {
     </p>
   </div>
 </li>`.trim();
-
-  return filmCommentTemplate;
-};
 
 const generateFilmCommentsTemplate = (comments) => comments.map((comment) => generateFilmCommentTemplate(comment)).join(``);
 

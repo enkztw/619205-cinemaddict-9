@@ -29,7 +29,7 @@ const navigates = [{
   isActive: false
 }];
 
-const generateCountTemplate = (count) => (count && count !== 0) ? `<span class="main-navigation__item-count">${count}</span>` : ``;
+const generateCountTemplate = (count) => (count) ? `<span class="main-navigation__item-count">${count}</span>` : ``;
 
 const generateNavigationItemTemplate = ({name, title, isActive, count}) => {
   const navigationItemTemplate =
