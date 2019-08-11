@@ -1,4 +1,5 @@
 import {getRandomNumber} from './utils';
+import {getRandomBoolean} from './utils';
 
 const films = [{
   name: `A Beautiful Mind`,
@@ -23,6 +24,10 @@ const films = [{
     reaction: `sleeping`,
     ago: getRandomNumber(0, 69)
   }],
+  isAdded: getRandomBoolean(),
+  isWatched: getRandomBoolean(),
+  isFavorite: getRandomBoolean(),
+  userScore: getRandomNumber(1, 9),
   director: `Ron Howard`,
   writers: `Akiva Goldsman, Sylvia Nasar`,
   actors: `Russell Crowe, Ed Harris, Jennifer Connelly`,
@@ -46,6 +51,10 @@ const films = [{
       reaction: `puke`,
       ago: getRandomNumber(0, 69)
     }],
+  isAdded: getRandomBoolean(),
+  isWatched: getRandomBoolean(),
+  isFavorite: getRandomBoolean(),
+  userScore: getRandomNumber(1, 9),
   director: `Joe Wright`,
   writers: `Ian McEwan, Christopher Hampton`,
   actors: `Keira Knightley, James McAvoy, Brenda Blethyn`,
@@ -75,6 +84,10 @@ const films = [{
       reaction: `smile`,
       ago: getRandomNumber(0, 69)
     }],
+  isAdded: getRandomBoolean(),
+  isWatched: getRandomBoolean(),
+  isFavorite: getRandomBoolean(),
+  userScore: getRandomNumber(1, 9),
   director: `Baz Luhrmann`,
   writers: `Baz Luhrmann, Craig Pearce`,
   actors: ` Leonardo DiCaprio, Carey Mulligan, Joel Edgerton`,
@@ -98,6 +111,10 @@ const films = [{
       reaction: `sleeping`,
       ago: getRandomNumber(0, 69)
     }],
+  isAdded: getRandomBoolean(),
+  isWatched: getRandomBoolean(),
+  isFavorite: getRandomBoolean(),
+  userScore: getRandomNumber(1, 9),
   director: `Quentin Tarantino`,
   writers: `Quentin Tarantino`,
   actors: `Leonardo DiCaprio, Brad Pitt, Margot Robbie`,
@@ -115,6 +132,10 @@ const films = [{
   genres: [`Drama`],
   description: `A teacher lives a lonely life, all the while struggling over his son's custody. His life slowly gets better as he finds love and receives good news from his son, but his new luck is about to be brutally shattered by an innocent little lie.`,
   comments: [],
+  isAdded: getRandomBoolean(),
+  isWatched: getRandomBoolean(),
+  isFavorite: getRandomBoolean(),
+  userScore: getRandomNumber(1, 9),
   director: `Thomas Vinterberg`,
   writers: `Tobias Lindholm, Thomas Vinterberg`,
   actors: `Mads Mikkelsen, Thomas Bo Larsen, Annika Wedderkopp`,

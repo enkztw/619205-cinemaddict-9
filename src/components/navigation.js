@@ -33,7 +33,7 @@ const generateCountTemplate = (count) => (count) ? `<span class="main-navigation
 
 const generateNavigationItemTemplate = ({name, title, isActive, count}) => {
   const navigationItemTemplate =
-  `<a href="#${name}" class="main-navigation__item${isActive ? ` main-navigation__item--active` : ``}">${title} ${generateCountTemplate(count)}</a>`.trim();
+  `<a href="#${name}" class="main-navigation__item${name === `stats` ? ` main-navigation__item--additional` : ``}${isActive ? ` main-navigation__item--active` : ``}">${title} ${generateCountTemplate(count)}</a>`.trim();
 
   return navigationItemTemplate;
 };

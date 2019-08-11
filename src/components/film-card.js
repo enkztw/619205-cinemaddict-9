@@ -1,4 +1,42 @@
-const generateFilmCardTemplate = ({name, image, rating, year, duration, genres, description, comments}) => {
+const controls = [{
+  name: `watchlist`,
+  description: `add-to-watchlist`
+},
+{
+  name: `watched`,
+  description: `mark-as-watched`
+},
+{
+  name: `favorite`,
+  description: `favorite`
+}];
+
+const generateFilmControlTemplate = ({name, description}, isActive) => `<button class="film-card__controls-item button film-card__controls-item--${description} ${isActive ? `film-card__controls-item--active` : ``}">Add to ${name}</button>`;
+
+const generateFilmControlsTemplate = (items, isActive) => items.map((item, index) => generateFilmControlTemplate(item, isActive[index])).join(``);
+
+const generateFilmControlsBlockTemplate = (items, isActive) => {
+  const filmControlsBlockTemplate =
+  `<form class="film-card__controls">
+  ${generateFilmControlsTemplate(items, isActive)}
+  </form>`.trim();
+
+  return filmControlsBlockTemplate;
+};
+
+const generateFilmCardTemplate = ({
+  name,
+  image,
+  rating,
+  year,
+  duration,
+  genres,
+  description,
+  comments,
+  isAdded,
+  isWatched,
+  isFavorite
+}) => {
   const filmCardTemplate =
     `<article class="film-card">
     <h3 class="film-card__title">${name}</h3>
@@ -11,11 +49,7 @@ const generateFilmCardTemplate = ({name, image, rating, year, duration, genres, 
     <img src="./images/posters/${image}" alt="${name}" class="film-card__poster">
     <p class="film-card__description">${description}</p>
     <a class="film-card__comments">${comments.length} comments</a>
-    <form class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-      <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-    </form>
+    ${generateFilmControlsBlockTemplate(controls, [isAdded, isWatched, isFavorite])}
   </article>`.trim();
 
   return filmCardTemplate;
@@ -31,4 +65,5 @@ const generateFilmCardsBlockTemplate = (items) => {
   return filmCardsTemplate;
 };
 
+export {controls};
 export {generateFilmCardsBlockTemplate};
