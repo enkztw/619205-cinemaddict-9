@@ -38,7 +38,7 @@ const generateNavigationItemTemplate = ({name, title, isActive, count}) => {
   return navigationItemTemplate;
 };
 
-const generateNavigationItemsTemplate = (items) => items.map((item) => generateNavigationItemTemplate(item)).join(``);
+const generateNavigationItemsTemplate = (items) => items.map(generateNavigationItemTemplate).join(``);
 
 const generateNavigationTemplate = (items) => {
   const navigationTemplate =
