@@ -34,15 +34,15 @@ renderComponent(generateFilmListTemplate(films), filmsContainer);
 // Extra films
 const filmComparatorMap = {
   rating(a, b) {
-    return b - a;
+    return b.rating - a.rating;
   },
   comments(a, b) {
-    return b.length - a.length;
+    return b.comments.length - a.comments.length;
   }
 };
 
 const sortFilms = (by) => {
-  const filmsCopy = films;
+  const filmsCopy = [...films];
   return filmsCopy.sort(filmComparatorMap[by]);
 };
 
