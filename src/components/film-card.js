@@ -55,7 +55,7 @@ const generateFilmCardTemplate = ({
   return filmCardTemplate;
 };
 
-const generateFilmCardsTemplate = (items) => items.map((item) => generateFilmCardTemplate(item)).join(``);
+const generateFilmCardsTemplate = (items) => items.map(generateFilmCardTemplate).join(``);
 const generateFilmCardsBlockTemplate = (items) => {
   const filmCardsTemplate =
     `<div class="films-list__container">

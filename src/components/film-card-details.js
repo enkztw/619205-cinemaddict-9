@@ -3,7 +3,7 @@ import {controls} from './film-card';
 // Genres
 const generateFilmGenreTemplate = (genre) => `<span class="film-details__genre">${genre}</span>`;
 
-const generateFilmGenresTemplate = (genres) => genres.map((genre) => generateFilmGenreTemplate(genre)).join(``);
+const generateFilmGenresTemplate = (genres) => genres.map(generateFilmGenreTemplate).join(``);
 
 const generateFilmGenresBlockTemplate = (genres) => {
   const filmGenresBlockTemplate =

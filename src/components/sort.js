@@ -13,7 +13,7 @@ const sorts = [{
 
 const generateSortItemTemplate = ({name, isActive}) => `<li><a href="#" class="sort__button${isActive ? ` sort__button--active` : ``}">Sort by ${name}</a></li>`.trim();
 
-const generateSortItemsTemplate = (items) => items.map((item) => generateSortItemTemplate(item)).join(``);
+const generateSortItemsTemplate = (items) => items.map(generateSortItemTemplate).join(``);
 
 const generateSortTemplate = (items) => {
   const sortTemplate =
