@@ -1,19 +1,5 @@
 import {controls} from './film-card';
-
-const months = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
+import {months} from '../data';
 
 // Genres
 const generateFilmGenreTemplate = (genre) => `<span class="film-details__genre">${genre}</span>`;
@@ -115,8 +101,9 @@ const joinSet = (set) => [...set].join(`, `);
 
 // Film Details
 const generateFilmCardDetailsTemplate = ({
+  id,
   name,
-  image,
+  poster,
   rating,
   date,
   duration,
@@ -133,7 +120,7 @@ const generateFilmCardDetailsTemplate = ({
   country
 }) => {
   const filmCardDetailsTemplate =
-    `<section class="film-details">
+    `<section class="film-details" data-id="${id}">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">
@@ -141,7 +128,7 @@ const generateFilmCardDetailsTemplate = ({
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/${image}" alt="${name}">
+          <img class="film-details__poster-img" src="./images/posters/${poster}" alt="${name}">
 
           <p class="film-details__age">18+</p>
         </div>
@@ -196,7 +183,7 @@ const generateFilmCardDetailsTemplate = ({
       ${generateFilmControlsBlockTemplate(controls, [isAdded, isWatched, isFavorite])}
     </div>
 
-    ${isWatched ? generateFilmRatingTemplate(name, image, userScore) : ``}
+    ${isWatched ? generateFilmRatingTemplate(name, poster, userScore) : ``}
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">

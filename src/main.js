@@ -89,8 +89,8 @@ renderComponent(generateFilmListTemplate(mostCommentedFilms.slice(0, 2), `Most c
 const filmCards = document.querySelectorAll(`.film-card .film-card__poster`);
 
 const onFilmCardClick = (evt) => {
-  const filmName = evt.target.getAttribute(`alt`);
-  const film = films.find((item) => item.name === filmName);
+  const id = parseInt(evt.target.closest(`article`).getAttribute(`data-id`), 10);
+  const film = films.find((item) => item.id === id);
   renderComponent(generateFilmCardDetailsTemplate(film), footer, `afterend`);
 };
 
