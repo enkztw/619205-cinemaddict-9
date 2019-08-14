@@ -28,7 +28,7 @@ const generateFilmCardTemplate = ({
   name,
   image,
   rating,
-  year,
+  date,
   duration,
   genres,
   description,
@@ -42,9 +42,9 @@ const generateFilmCardTemplate = ({
     <h3 class="film-card__title">${name}</h3>
     <p class="film-card__rating">${rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${year}</span>
-      <span class="film-card__duration">${duration.hours}h ${duration.minutes}m</span>
-      <span class="film-card__genre">${genres[0]}</span>
+      <span class="film-card__year">${date.getFullYear()}</span>
+      <span class="film-card__duration">${Math.floor(duration / 60)}h ${duration % 60}m</span>
+      <span class="film-card__genre">${Array.from(genres)[0]}</span>
     </p>
     <img src="./images/posters/${image}" alt="${name}" class="film-card__poster">
     <p class="film-card__description">${description}</p>
@@ -66,4 +66,5 @@ const generateFilmCardsBlockTemplate = (items) => {
 };
 
 export {controls};
+export {generateFilmCardsTemplate};
 export {generateFilmCardsBlockTemplate};

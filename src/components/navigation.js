@@ -1,33 +1,38 @@
-import {getRandomNumber} from '../utils';
-
 const navigates = [{
   name: `all`,
   title: `All movies`,
-  isActive: true
+  isActive: true,
+  count: 0
 },
 {
   name: `watchlist`,
   title: `Watchlist`,
   isActive: false,
-  count: getRandomNumber(0, 69),
+  count: 0,
 },
 {
   name: `history`,
   title: `History`,
   isActive: false,
-  count: getRandomNumber(0, 69)
+  count: 0
 },
 {
   name: `favorites`,
   title: `Favorites`,
   isActive: false,
-  count: getRandomNumber(0, 69)
+  count: 0
 },
 {
   name: `stats`,
   title: `Stats`,
   isActive: false
 }];
+
+const getNavigate = (name) => navigates.find((navigate) => navigate.name === name);
+
+const setNavigateCount = (navigate, count) => {
+  navigate.count = count;
+};
 
 const generateCountTemplate = (count) => (count) ? `<span class="main-navigation__item-count">${count}</span>` : ``;
 
@@ -50,4 +55,6 @@ const generateNavigationTemplate = (items) => {
 };
 
 export {navigates};
+export {getNavigate};
+export {setNavigateCount};
 export {generateNavigationTemplate};
