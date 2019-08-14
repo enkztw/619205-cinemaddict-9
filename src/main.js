@@ -100,11 +100,18 @@ for (const filmCard of filmCards) {
 
 // Event to show more films
 const filmsList = document.querySelector(`.films-list .films-list__container`);
-
 const showMoreButton = document.querySelector(`.films-list__show-more`);
+
+let currentFilmsOnBoard = MAX_FILMS_ON_BOARD;
+
 const onShowMoreButtonClick = () => {
-  showMoreButton.remove();
-  renderComponent(generateFilmCardsTemplate(films.slice(MAX_FILMS_ON_BOARD)), filmsList);
+  renderComponent(generateFilmCardsTemplate(films.slice(currentFilmsOnBoard, currentFilmsOnBoard + MAX_FILMS_ON_BOARD)), filmsList);
+  currentFilmsOnBoard += MAX_FILMS_ON_BOARD;
+
+  if (currentFilmsOnBoard >= films.length) {
+    showMoreButton.remove();
+  }
+
 };
 
 showMoreButton.addEventListener(`click`, onShowMoreButtonClick);

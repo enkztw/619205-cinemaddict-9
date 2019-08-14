@@ -3,6 +3,8 @@ import {getRandomElement} from './utils';
 import {getRandomBoolean} from './utils';
 import {getShuffledArray} from './utils';
 
+const FILMS_AMOUNT = 18;
+
 const names = [`A Beautiful Mind`, `Atonement`, `The Great Gatsby`, `Once Upon a Time ... in Hollywood`, `Jagten`, `Dunkirk`];
 const posters = [`a-beautiful-mind.jpg`, `atonement.jpg`, `the-great-gatsby.jpg`, `once-upon-a-time-in-hollywood.jpg`, `jagten.jpg`, `dunkirk.jpg`];
 
@@ -76,7 +78,7 @@ const generateFilmData = (id) => {
 
 const genreateFilmsData = (amount) => [...Array(amount)].map((film, id) => generateFilmData(id));
 
-const films = genreateFilmsData(16);
+const films = genreateFilmsData(FILMS_AMOUNT);
 
 export {months};
 export {films};
