@@ -19,26 +19,15 @@ const getTopGenre = (films) => {
   };
 
 
-  for (const film of films) {
-    for (const genre of film.genres) {
-      genresCounter[genre] += 1;
-    }
+  const genres = films.map((film) => [...film.genres]).flat();
+  for (const genre of genres) {
+    genresCounter[genre] += 1;
   }
 
-  const findTopGenre = (counter) => {
-    let maxCount = 0;
-    let topGenre = ``;
-    for (const [genre, count] of Object.entries(counter)) {
-      if (count > maxCount) {
-        maxCount = count;
-        topGenre = genre;
-      }
-    }
 
-    return topGenre;
-  };
+  const findTopGenre = (counter) => Object.keys(counter).reduce((acc, curr) => (counter[acc] > counter[curr] ? acc : curr));
 
-  return findTopGenre(genresCounter);
+  return findTopGenre(Object.values(genresCounter));
 };
 
 const generateStatisticTemplate = (rank, avatar, watchedFilms) => `<section class="statistic visually-hidden">

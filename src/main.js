@@ -7,10 +7,10 @@ import {user} from './components/user-rank';
 import {getUserRank} from './components/user-rank';
 import {generateUserRankTemplate} from './components/user-rank';
 
-import {navigates} from './components/navigation';
-import {getNavigate} from './components/navigation';
-import {setNavigateCount} from './components/navigation';
-import {generateNavigationTemplate} from './components/navigation';
+import {filters} from './components/filters';
+import {getFilter} from './components/filters';
+import {setFilterCount} from './components/filters';
+import {generateFiltersBlockTemplate} from './components/filters';
 
 import {sorts} from './components/sort';
 import {generateSortTemplate} from './components/sort';
@@ -42,16 +42,16 @@ user.rank = userRank;
 renderComponent(generateUserRankTemplate(user), header);
 
 // Menu
-const history = getNavigate(`history`);
-setNavigateCount(history, watchedFilms.length);
+const history = getFilter(`history`);
+setFilterCount(history, watchedFilms.length);
 
-const watchlist = getNavigate(`watchlist`);
-setNavigateCount(watchlist, watchlistFilms.length);
+const watchlist = getFilter(`watchlist`);
+setFilterCount(watchlist, watchlistFilms.length);
 
-const favorites = getNavigate(`favorites`);
-setNavigateCount(favorites, favoriteFilms.length);
+const favorites = getFilter(`favorites`);
+setFilterCount(favorites, favoriteFilms.length);
 
-renderComponent(generateNavigationTemplate(navigates), main);
+renderComponent(generateFiltersBlockTemplate(filters), main);
 renderComponent(generateSortTemplate(sorts), main);
 
 // Statistic
