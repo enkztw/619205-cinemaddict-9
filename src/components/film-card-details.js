@@ -111,7 +111,7 @@ const generateFilmCommentsListTemplate = (comments) => {
   return filmCommentsListTemplate;
 };
 
-const joinSet = (set) => Array.from(set).join(`, `);
+const joinSet = (set) => [...set].join(`, `);
 
 // Film Details
 const generateFilmCardDetailsTemplate = ({

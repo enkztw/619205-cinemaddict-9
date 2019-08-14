@@ -6,11 +6,12 @@ const user = {
 const getUserRank = (filmsWatched) => {
   if (filmsWatched.length > 0 && filmsWatched.length <= 10) {
     return `Novice`;
-  } else if (filmsWatched.length >= 11 && filmsWatched.length <= 20) {
-    return `Fan`;
-  } else {
-    return `Movie buff`;
   }
+  if (filmsWatched.length >= 11 && filmsWatched.length <= 20) {
+    return `Fan`;
+  }
+
+  return `Movie buff`;
 };
 
 const generateUserRankTemplate = ({rank, avatar}) => {
@@ -23,6 +24,4 @@ const generateUserRankTemplate = ({rank, avatar}) => {
   return userProfileTemplate;
 };
 
-export {user};
-export {getUserRank};
-export {generateUserRankTemplate};
+export {user, getUserRank, generateUserRankTemplate};

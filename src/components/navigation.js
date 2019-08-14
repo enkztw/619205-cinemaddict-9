@@ -54,7 +54,4 @@ const generateNavigationTemplate = (items) => {
   return navigationTemplate;
 };
 
-export {navigates};
-export {getNavigate};
-export {setNavigateCount};
-export {generateNavigationTemplate};
+export {navigates, getNavigate, setNavigateCount, generateNavigationTemplate};

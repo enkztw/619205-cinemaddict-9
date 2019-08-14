@@ -1,14 +1,8 @@
 const getTotalTime = (films) => {
-  if (films.length === 0) {
-    return {hours: 0, minutes: 0};
-  }
   const time = films.map((film) => film.duration);
-  const totalTime = time.reduce((acc, curr) => {
-    acc += curr;
-    return acc;
-  });
+  const totalTime = time.reduce((acc, curr) => ({hours: Math.floor((acc.hours + curr) / 60), minutes: (acc.minutes + curr) % 60}), {hours: 0, minutes: 0});
 
-  return {hours: Math.floor(totalTime / 60), minutes: totalTime % 60};
+  return totalTime;
 };
 
 const getTopGenre = (films) => {
@@ -23,6 +17,7 @@ const getTopGenre = (films) => {
     Romance: 0,
     History: 0
   };
+
 
   for (const film of films) {
     for (const genre of film.genres) {

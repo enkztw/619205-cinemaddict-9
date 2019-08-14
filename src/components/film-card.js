@@ -65,6 +65,4 @@ const generateFilmCardsBlockTemplate = (items) => {
   return filmCardsTemplate;
 };
 
-export {controls};
-export {generateFilmCardsTemplate};
-export {generateFilmCardsBlockTemplate};
+export {controls, generateFilmCardsTemplate, generateFilmCardsBlockTemplate};
