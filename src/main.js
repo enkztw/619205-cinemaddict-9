@@ -23,8 +23,10 @@ import {generateFilmListTemplate} from './components/films-list';
 import {generateFilmCardDetailsTemplate} from './components/film-card-details';
 
 const MAX_FILMS_ON_ROW = 5;
-let currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+let currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
 let currentFilms = films;
+let currentFilter = `all`;
+
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
@@ -104,29 +106,20 @@ for (const filmCard of filmCards) {
 const filmsList = document.querySelector(`.films-list .films-list__container`);
 const showMoreButton = document.querySelector(`.films-list__show-more`);
 
+const filmLoadMap = {
+  all: films,
+  watchlist: watchlistFilms,
+  history: watchedFilms,
+  favorites: favoriteFilms
+};
+
 const onShowMoreButtonClick = () => {
-  const currentFilter = document.querySelector(`.main-navigation__item--active`).getAttribute(`href`).replace(`#`, ``);
+  renderComponent(generateFilmCardsTemplate(filmLoadMap[currentFilter].slice(currentFilmsSpaceOnBoard, currentFilmsSpaceOnBoard + MAX_FILMS_ON_ROW)), filmsList);
+  currentFilmsSpaceOnBoard += MAX_FILMS_ON_ROW;
 
-  switch (currentFilter) {
-    case `all`:
-      renderComponent(generateFilmCardsTemplate(films.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
-      break;
-    case `watchlist`:
-      renderComponent(generateFilmCardsTemplate(watchlistFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
-      break;
-    case `history`:
-      renderComponent(generateFilmCardsTemplate(watchedFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
-      break;
-    case `favorites`:
-      renderComponent(generateFilmCardsTemplate(favoriteFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
-      break;
-  }
-
-
-  if (currentFilmsOnBoard >= currentFilms.length) {
+  if (currentFilmsSpaceOnBoard >= currentFilms.length) {
     showMoreButton.classList.add(`visually-hidden`);
   }
-
 };
 
 showMoreButton.addEventListener(`click`, onShowMoreButtonClick);
@@ -163,43 +156,47 @@ const renderFilmsByNavigation = (filteredFilms) => {
   toggleSections();
 };
 
-const onNavigationClick = (evt) => {
-  const navigationButton = evt.target.closest(`a`);
+const onNavigationClick = (button) => {
 
   clearNaviationsActiveState();
-  navigationButton.classList.add(`main-navigation__item--active`);
+  button.classList.add(`main-navigation__item--active`);
 
-  switch (navigationButton.getAttribute(`href`).replace(`#`, ``)) {
+  switch (button.getAttribute(`href`).replace(`#`, ``)) {
     case `all`:
       renderFilmsByNavigation(films.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = films;
+      currentFilter = `all`;
       break;
     case `watchlist`:
       renderFilmsByNavigation(watchlistFilms.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = watchlistFilms;
+      currentFilter = `watchlist`;
       break;
     case `history`:
       renderFilmsByNavigation(watchedFilms.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = watchedFilms;
+      currentFilter = `history`;
       break;
     case `favorites`:
       renderFilmsByNavigation(favoriteFilms.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = favoriteFilms;
+      currentFilter = `favorites`;
       break;
   }
 
-  if (currentFilmsOnBoard < currentFilms.length) {
+  if (currentFilmsSpaceOnBoard < currentFilms.length) {
     showMoreButton.classList.remove(`visually-hidden`);
   }
-
 };
 
 for (const navigationButton of navigationButtons) {
-  navigationButton.addEventListener(`click`, onNavigationClick);
+  navigationButton.addEventListener(`click`, (evt) => {
+    onNavigationClick(evt.target.closest(`.main-navigation__item`));
+  });
 }
 
 // Calculating movies inside
