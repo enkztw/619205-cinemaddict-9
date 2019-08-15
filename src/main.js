@@ -112,15 +112,12 @@ const onShowMoreButtonClick = () => {
       renderComponent(generateFilmCardsTemplate(films.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
       break;
     case `watchlist`:
-      console.log(currentFilms);
       renderComponent(generateFilmCardsTemplate(watchlistFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
       break;
     case `history`:
-      console.log(currentFilms);
       renderComponent(generateFilmCardsTemplate(watchedFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
       break;
     case `favorites`:
-      console.log(currentFilms);
       renderComponent(generateFilmCardsTemplate(favoriteFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
       break;
   }
@@ -129,8 +126,6 @@ const onShowMoreButtonClick = () => {
   if (currentFilmsOnBoard >= currentFilms.length) {
     showMoreButton.classList.add(`visually-hidden`);
   }
-
-  console.log(currentFilmsOnBoard);
 
 };
 
