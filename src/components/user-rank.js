@@ -7,7 +7,7 @@ const getUserRank = (filmsWatched) => {
   if (filmsWatched.length > 0 && filmsWatched.length <= 10) {
     return `Novice`;
   }
-  if (filmsWatched.length >= 11 && filmsWatched.length <= 20) {
+  if (filmsWatched.length <= 20) {
     return `Fan`;
   }
 

@@ -22,7 +22,9 @@ import {generateFilmCardsTemplate} from './components/film-card';
 import {generateFilmListTemplate} from './components/films-list';
 import {generateFilmCardDetailsTemplate} from './components/film-card-details';
 
-const MAX_FILMS_ON_BOARD = 5;
+const MAX_FILMS_ON_ROW = 5;
+let currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+let currentFilms = films;
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
@@ -59,7 +61,7 @@ renderComponent(generateStatisticTemplate(userRank, user.avatar, watchedFilms), 
 
 // All films
 const filmsContainer = renderContainer(`section`, [`films`], main);
-renderComponent(generateFilmListTemplate(films.slice(0, MAX_FILMS_ON_BOARD)), filmsContainer);
+renderComponent(generateFilmListTemplate(films.slice(0, MAX_FILMS_ON_ROW)), filmsContainer);
 
 // Extra films
 const filmComparatorMap = {
@@ -102,15 +104,33 @@ for (const filmCard of filmCards) {
 const filmsList = document.querySelector(`.films-list .films-list__container`);
 const showMoreButton = document.querySelector(`.films-list__show-more`);
 
-let currentFilmsOnBoard = MAX_FILMS_ON_BOARD;
-
 const onShowMoreButtonClick = () => {
-  renderComponent(generateFilmCardsTemplate(films.slice(currentFilmsOnBoard, currentFilmsOnBoard + MAX_FILMS_ON_BOARD)), filmsList);
-  currentFilmsOnBoard += MAX_FILMS_ON_BOARD;
+  const currentFilter = document.querySelector(`.main-navigation__item--active`).getAttribute(`href`).replace(`#`, ``);
 
-  if (currentFilmsOnBoard >= films.length) {
-    showMoreButton.remove();
+  switch (currentFilter) {
+    case `all`:
+      renderComponent(generateFilmCardsTemplate(films.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
+      break;
+    case `watchlist`:
+      console.log(currentFilms);
+      renderComponent(generateFilmCardsTemplate(watchlistFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
+      break;
+    case `history`:
+      console.log(currentFilms);
+      renderComponent(generateFilmCardsTemplate(watchedFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
+      break;
+    case `favorites`:
+      console.log(currentFilms);
+      renderComponent(generateFilmCardsTemplate(favoriteFilms.slice(currentFilmsOnBoard, currentFilmsOnBoard += MAX_FILMS_ON_ROW)), filmsList);
+      break;
   }
+
+
+  if (currentFilmsOnBoard >= currentFilms.length) {
+    showMoreButton.classList.add(`visually-hidden`);
+  }
+
+  console.log(currentFilmsOnBoard);
 
 };
 
@@ -149,25 +169,38 @@ const renderFilmsByNavigation = (filteredFilms) => {
 };
 
 const onNavigationClick = (evt) => {
-  const navigationButton = evt.target;
+  const navigationButton = evt.target.closest(`a`);
 
   clearNaviationsActiveState();
   navigationButton.classList.add(`main-navigation__item--active`);
 
   switch (navigationButton.getAttribute(`href`).replace(`#`, ``)) {
     case `all`:
-      renderFilmsByNavigation(films.slice(0, MAX_FILMS_ON_BOARD));
+      renderFilmsByNavigation(films.slice(0, MAX_FILMS_ON_ROW));
+      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilms = films;
       break;
     case `watchlist`:
-      renderFilmsByNavigation(watchlistFilms);
+      renderFilmsByNavigation(watchlistFilms.slice(0, MAX_FILMS_ON_ROW));
+      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilms = watchlistFilms;
       break;
     case `history`:
-      renderFilmsByNavigation(watchedFilms);
+      renderFilmsByNavigation(watchedFilms.slice(0, MAX_FILMS_ON_ROW));
+      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilms = watchedFilms;
       break;
     case `favorites`:
-      renderFilmsByNavigation(favoriteFilms);
+      renderFilmsByNavigation(favoriteFilms.slice(0, MAX_FILMS_ON_ROW));
+      currentFilmsOnBoard = MAX_FILMS_ON_ROW;
+      currentFilms = favoriteFilms;
       break;
   }
+
+  if (currentFilmsOnBoard < currentFilms.length) {
+    showMoreButton.classList.remove(`visually-hidden`);
+  }
+
 };
 
 for (const navigationButton of navigationButtons) {
