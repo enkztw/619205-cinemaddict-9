@@ -23,7 +23,7 @@ import {generateFilmListTemplate} from './components/films-list';
 import {generateFilmCardDetailsTemplate} from './components/film-card-details';
 
 const MAX_FILMS_ON_ROW = 5;
-let currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
+let currentFilmsCountOnBoard = 0;
 let currentFilms = films;
 let currentFilter = `all`;
 
@@ -114,10 +114,10 @@ const filmLoadMap = {
 };
 
 const onShowMoreButtonClick = () => {
-  renderComponent(generateFilmCardsTemplate(filmLoadMap[currentFilter].slice(currentFilmsSpaceOnBoard, currentFilmsSpaceOnBoard + MAX_FILMS_ON_ROW)), filmsList);
-  currentFilmsSpaceOnBoard += MAX_FILMS_ON_ROW;
+  currentFilmsCountOnBoard = filmsList.querySelectorAll(`.film-card`).length;
+  renderComponent(generateFilmCardsTemplate(filmLoadMap[currentFilter].slice(currentFilmsCountOnBoard, currentFilmsCountOnBoard + MAX_FILMS_ON_ROW)), filmsList);
 
-  if (currentFilmsSpaceOnBoard >= currentFilms.length) {
+  if (filmsList.querySelectorAll(`.film-card`).length === currentFilms.length) {
     showMoreButton.classList.add(`visually-hidden`);
   }
 };
@@ -164,31 +164,27 @@ const onNavigationClick = (button) => {
   switch (button.getAttribute(`href`).replace(`#`, ``)) {
     case `all`:
       renderFilmsByNavigation(films.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = films;
       currentFilter = `all`;
       break;
     case `watchlist`:
       renderFilmsByNavigation(watchlistFilms.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = watchlistFilms;
       currentFilter = `watchlist`;
       break;
     case `history`:
       renderFilmsByNavigation(watchedFilms.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = watchedFilms;
       currentFilter = `history`;
       break;
     case `favorites`:
       renderFilmsByNavigation(favoriteFilms.slice(0, MAX_FILMS_ON_ROW));
-      currentFilmsSpaceOnBoard = MAX_FILMS_ON_ROW;
       currentFilms = favoriteFilms;
       currentFilter = `favorites`;
       break;
   }
 
-  if (currentFilmsSpaceOnBoard < currentFilms.length) {
+  if (currentFilmsCountOnBoard < currentFilms.length) {
     showMoreButton.classList.remove(`visually-hidden`);
   }
 };
