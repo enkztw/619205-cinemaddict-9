@@ -24,5 +24,4 @@ const generateSortTemplate = (items) => {
   return sortTemplate;
 };
 
-export {sorts};
-export {generateSortTemplate};
+export {sorts, generateSortTemplate};

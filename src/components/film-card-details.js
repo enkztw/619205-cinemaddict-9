@@ -1,9 +1,10 @@
 import {controls} from './film-card';
+import {months} from '../data';
 
 // Genres
 const generateFilmGenreTemplate = (genre) => `<span class="film-details__genre">${genre}</span>`;
 
-const generateFilmGenresTemplate = (genres) => genres.map(generateFilmGenreTemplate).join(``);
+const generateFilmGenresTemplate = (genres) => Array.from(genres).map(generateFilmGenreTemplate).join(``);
 
 const generateFilmGenresBlockTemplate = (genres) => {
   const filmGenresBlockTemplate =
@@ -96,13 +97,15 @@ const generateFilmCommentsListTemplate = (comments) => {
   return filmCommentsListTemplate;
 };
 
+const joinSet = (set) => [...set].join(`, `);
 
 // Film Details
 const generateFilmCardDetailsTemplate = ({
+  id,
   name,
-  image,
+  poster,
   rating,
-  year,
+  date,
   duration,
   genres,
   description,
@@ -117,7 +120,7 @@ const generateFilmCardDetailsTemplate = ({
   country
 }) => {
   const filmCardDetailsTemplate =
-    `<section class="film-details">
+    `<section class="film-details" data-id="${id}">
   <form class="film-details__inner" action="" method="get">
     <div class="form-details__top-container">
       <div class="film-details__close">
@@ -125,7 +128,7 @@ const generateFilmCardDetailsTemplate = ({
       </div>
       <div class="film-details__info-wrap">
         <div class="film-details__poster">
-          <img class="film-details__poster-img" src="./images/posters/${image}" alt="${name}">
+          <img class="film-details__poster-img" src="./images/posters/${poster}" alt="${name}">
 
           <p class="film-details__age">18+</p>
         </div>
@@ -150,19 +153,19 @@ const generateFilmCardDetailsTemplate = ({
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">${writers}</td>
+              <td class="film-details__cell">${joinSet(writers)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">${actors}</td>
+              <td class="film-details__cell">${joinSet(actors)}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
-              <td class="film-details__cell">30 March ${year}</td>
+              <td class="film-details__cell">${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${duration.hours}h ${duration.minutes}m</td>
+              <td class="film-details__cell">${Math.floor(duration / 60)}h ${duration % 60}m</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
@@ -180,7 +183,7 @@ const generateFilmCardDetailsTemplate = ({
       ${generateFilmControlsBlockTemplate(controls, [isAdded, isWatched, isFavorite])}
     </div>
 
-    ${isWatched ? generateFilmRatingTemplate(name, image, userScore) : ``}
+    ${isWatched ? generateFilmRatingTemplate(name, poster, userScore) : ``}
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
