@@ -1,11 +1,10 @@
-import {generateFilmCardsBlockTemplate} from './film-card';
 import {generateShowMoreButtonTemplate} from './show-more-button';
 
-const generateFilmListTemplate = (items, title = `All movies. Upcoming`, isExtra = false) => {
+const generateFilmListTemplate = (title = `All movies. Upcoming`, isExtra = false) => {
   const filmListTemplate =
-  `<section class="films-list${isExtra ? `--extra` : ``}">
+  `<section class="films-list${isExtra ? `--extra` : ``}" data-name="${title}">
   <h2 class="films-list__title ${!isExtra ? `visually-hidden` : ``}">${title}</h2>
-  ${generateFilmCardsBlockTemplate(items)}
+  <div class="films-list__container"></div>
   ${!isExtra ? generateShowMoreButtonTemplate() : ``}
   </section>`.trim();
 
