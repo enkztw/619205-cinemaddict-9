@@ -41,30 +41,38 @@ const renderFilm = (filmMock, container) => {
   const film = new Film(filmMock);
   const filmDetailed = new FilmDetailed(filmMock);
 
-  const filmElement = film.element;
-  const filmDetailedElement = filmDetailed.element;
-
   const onCloseButtonClick = () => {
     filmDetailed.removeElement();
+    document.removeEventListener(`keydown`, onEscButtonClick);
   };
 
   const onEscButtonClick = (evt) => {
-    if (evt.keyCode === 27) {
-      onCloseButtonClick();
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      filmDetailed.removeElement();
       document.removeEventListener(`keydown`, onEscButtonClick);
     }
   };
 
   const onFilmElementClick = () => {
     document.addEventListener(`keydown`, onEscButtonClick);
-    filmDetailedElement.querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
+
+    filmDetailed.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
+
+    filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`focus`, () => {
+      document.removeEventListener(`keydown`, onEscButtonClick);
+    });
+
+    filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`blur`, () => {
+      document.addEventListener(`keydown`, onEscButtonClick);
+    });
+
     filmDetailed.renderElement(footer, `afterend`);
   };
 
 
-  filmElement.querySelector(`.film-card__poster`).addEventListener(`click`, onFilmElementClick);
-  filmElement.querySelector(`.film-card__title`).addEventListener(`click`, onFilmElementClick);
-  filmElement.querySelector(`.film-card__comments`).addEventListener(`click`, onFilmElementClick);
+  film.element.querySelector(`.film-card__poster`).addEventListener(`click`, onFilmElementClick);
+  film.element.querySelector(`.film-card__title`).addEventListener(`click`, onFilmElementClick);
+  film.element.querySelector(`.film-card__comments`).addEventListener(`click`, onFilmElementClick);
 
   film.renderElement(container);
 };
@@ -75,7 +83,10 @@ renderComponent(generateSearchTemplate(), header);
 // User rank
 const userRank = getUserRank(watchedFilms);
 user.rank = userRank;
-renderComponent(generateUserRankTemplate(user), header);
+if (watchedFilms.length > 0) {
+  renderComponent(generateUserRankTemplate(user), header);
+}
+
 
 // Menu
 const history = getFilter(`history`);
@@ -172,7 +183,7 @@ statsButton.addEventListener(`click`, onStatsButtonClick);
 // Global event for filters
 const filtersButtons = document.querySelectorAll(`.main-navigation__item`);
 
-const clearNaviationsActiveState = () => {
+const clearFiltersActiveState = () => {
   for (const filterButton of filtersButtons) {
     filterButton.classList.remove(`main-navigation__item--active`);
   }
@@ -195,7 +206,7 @@ const renderFilmsByFilter = (filteredFilms) => {
 
 const onFilterClick = (button) => {
 
-  clearNaviationsActiveState();
+  clearFiltersActiveState();
   button.classList.add(`main-navigation__item--active`);
 
   switch (button.getAttribute(`href`).replace(`#`, ``)) {

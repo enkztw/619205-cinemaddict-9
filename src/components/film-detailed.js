@@ -101,40 +101,24 @@ const generateFilmCommentsListTemplate = (comments) => {
 const joinSet = (set) => [...set].join(`, `);
 
 export default class FilmDetailed {
-  constructor({id,
-    name,
-    poster,
-    rating,
-    date,
-    duration,
-    genres,
-    description,
-    comments,
-    isAdded,
-    isWatched,
-    isFavorite,
-    userScore,
-    director,
-    writers,
-    actors,
-    country}) {
-    this._id = id;
-    this._name = name;
-    this._poster = poster;
-    this._rating = rating;
-    this._date = date;
-    this._duration = duration;
-    this._genres = genres;
-    this._description = description;
-    this._comments = comments;
-    this._isAdded = isAdded;
-    this._isWatched = isWatched;
-    this._isFavorite = isFavorite;
-    this._userScore = userScore;
-    this._director = director;
-    this._writers = writers;
-    this._actors = actors;
-    this._country = country;
+  constructor(film) {
+    this._id = film.id;
+    this._name = film.name;
+    this._poster = film.poster;
+    this._rating = film.rating;
+    this._date = film.date;
+    this._duration = film.duration;
+    this._genres = film.genres;
+    this._description = film.description;
+    this._comments = film.comments;
+    this._isAdded = film.isAdded;
+    this._isWatched = film.isWatched;
+    this._isFavorite = film.isFavorite;
+    this._userScore = film.userScore;
+    this._director = film.director;
+    this._writers = film.writers;
+    this._actors = film.actors;
+    this._country = film.country;
   }
 
   get template() {
@@ -257,6 +241,9 @@ export default class FilmDetailed {
   }
 
   removeElement() {
-    this._element.remove();
+    if (this._element) {
+      this._element.remove();
+      this._element = null;
+    }
   }
 }

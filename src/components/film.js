@@ -15,30 +15,19 @@ const generateFilmControlsBlockTemplate = (items, isActive) => {
 };
 
 export default class Film {
-  constructor({id,
-    name,
-    poster,
-    rating,
-    date,
-    duration,
-    genres,
-    description,
-    comments,
-    isAdded,
-    isWatched,
-    isFavorite}) {
-    this._id = id;
-    this._name = name;
-    this._poster = poster;
-    this._rating = rating;
-    this._date = date;
-    this._duration = duration;
-    this._genres = genres;
-    this._description = description;
-    this._comments = comments;
-    this._isAdded = isAdded;
-    this._isWatched = isWatched;
-    this._isFavorite = isFavorite;
+  constructor(film) {
+    this._id = film.id;
+    this._name = film.name;
+    this._poster = film.poster;
+    this._rating = film.rating;
+    this._date = film.date;
+    this._duration = film.duration;
+    this._genres = film.genres;
+    this._description = film.description;
+    this._comments = film.comments;
+    this._isAdded = film.isAdded;
+    this._isWatched = film.isWatched;
+    this._isFavorite = film.isFavorite;
     this._element = null;
   }
 
@@ -71,7 +60,10 @@ export default class Film {
   }
 
   removeElement() {
-    this._element.remove();
+    if (this._element) {
+      this._element.remove();
+      this._element = null;
+    }
   }
 }
 

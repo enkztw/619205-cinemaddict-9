@@ -7,7 +7,7 @@ const getTotalTime = (films) => {
 
 const getTopGenre = (films) => {
   if (films.length === 0) {
-    return `None`;
+    return undefined;
   }
 
   const genresCounter = {
@@ -30,12 +30,16 @@ const getTopGenre = (films) => {
   return findTopGenre(Object.values(genresCounter));
 };
 
-const generateStatisticTemplate = (rank, avatar, watchedFilms) => `<section class="statistic visually-hidden">
-<p class="statistic__rank">
+const generateUserRankTemplate = (rank, avatar) => {
+  return `<p class="statistic__rank">
   Your rank 
   <img class="statistic__img" src="images/${avatar}" alt="Avatar" width="35" height="35"> 
   <span class="statistic__rank-label">${rank}</span>
-</p>
+</p>`;
+};
+
+const generateStatisticTemplate = (rank, avatar, watchedFilms) => `<section class="statistic visually-hidden">
+${watchedFilms > 0 ? generateUserRankTemplate(rank, avatar) : ``}
 
 <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
   <p class="statistic__filters-description">Show stats:</p>
