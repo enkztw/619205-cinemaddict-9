@@ -1,4 +1,4 @@
-import {createElement} from '../dom-utils';
+import BaseComponent from './base-component';
 import {months} from '../data';
 import {controls} from '../films';
 
@@ -100,8 +100,9 @@ const generateFilmCommentsListTemplate = (comments) => {
 
 const joinSet = (set) => [...set].join(`, `);
 
-export default class FilmDetailed {
+export default class FilmDetailed extends BaseComponent {
   constructor(film) {
+    super();
     this._id = film.id;
     this._name = film.name;
     this._poster = film.poster;
@@ -226,24 +227,5 @@ export default class FilmDetailed {
       </div>
     </form>
   </section>`.trim();
-  }
-
-  get element() {
-    if (!this._element) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
-  }
-
-  renderElement(container, position = `beforeend`) {
-    container.insertAdjacentElement(position, this.element);
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element.remove();
-      this._element = null;
-    }
   }
 }

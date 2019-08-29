@@ -1,27 +1,32 @@
-const user = {
-  rank: ``,
-  avatar: `bitmap@2x.png`
-};
+import BaseComponent from './base-component';
 
-const getUserRank = (filmsWatched) => {
-  if (filmsWatched.length > 0 && filmsWatched.length <= 10) {
-    return `Novice`;
-  }
-  if (filmsWatched.length <= 20) {
-    return `Fan`;
+export default class UserRank extends BaseComponent {
+  constructor(watchedFilms) {
+    super();
+    this._watchedFilms = watchedFilms;
+    this._rank = `Novice`;
+    this._avatar = `bitmap@2x.png`;
   }
 
-  return `Movie buff`;
-};
+  // get userRank() {
+  //   if (!this._watchedFilms.length) {
+  //     return ``;
+  //   }
 
-const generateUserRankTemplate = ({rank, avatar}) => {
-  const userProfileTemplate =
-  `<section class="header__profile profile">
-    <p class="profile__rating">${rank}</p>
-    <img class="profile__avatar" src="images/${avatar}" alt="Avatar" width="35" height="35">
-  </section>`.trim();
+  //   if (this._watchedFilms.length > 0 && this._watchedFilms.length <= 10) {
+  //     return `Novice`;
+  //   }
+  //   if (this._watchedFilms.length <= 20) {
+  //     return `Fan`;
+  //   }
 
-  return userProfileTemplate;
-};
+  //   return `Movie buff`;
+  // }
 
-export {user, getUserRank, generateUserRankTemplate};
+  get template() {
+    return `<section class="header__profile profile">
+    <p class="profile__rating">${this._rank}</p>
+    <img class="profile__avatar" src="images/${this._avatar}" alt="Avatar" width="35" height="35">
+    </section>`;
+  }
+}

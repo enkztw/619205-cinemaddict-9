@@ -1,5 +1,12 @@
-import {films} from '../data';
+import BaseComponent from './base-component';
 
-const generateShowMoreButtonTemplate = () => `<button class="films-list__show-more${films.length < 5 ? ` visually-hidden` : ``}">Show more</button>`.trim();
+export default class ShowMoreButton extends BaseComponent {
+  constructor(films) {
+    super();
+    this._films = films;
+  }
 
-export {generateShowMoreButtonTemplate};
+  get template() {
+    return `<button class="films-list__show-more${this._films.length < 5 ? ` visually-hidden` : ``}">Show more</button>`;
+  }
+}
