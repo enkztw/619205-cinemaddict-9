@@ -27,7 +27,7 @@ const getTopGenre = (films) => {
 
   const findTopGenre = (counter) => Object.keys(counter).reduce((acc, curr) => (counter[acc] > counter[curr] ? acc : curr));
 
-  return findTopGenre(Object.values(genresCounter));
+  return findTopGenre(genresCounter);
 };
 
 const generateUserRankTemplate = (rank, avatar) => {
@@ -39,7 +39,7 @@ const generateUserRankTemplate = (rank, avatar) => {
 };
 
 const generateStatisticTemplate = (rank, avatar, watchedFilms) => `<section class="statistic visually-hidden">
-${watchedFilms > 0 ? generateUserRankTemplate(rank, avatar) : ``}
+${watchedFilms.length > 0 ? generateUserRankTemplate(rank, avatar) : ``}
 
 <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
   <p class="statistic__filters-description">Show stats:</p>

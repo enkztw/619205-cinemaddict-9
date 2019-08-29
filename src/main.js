@@ -209,6 +209,10 @@ const onFilterClick = (button) => {
   clearFiltersActiveState();
   button.classList.add(`main-navigation__item--active`);
 
+  if (films.length === 0) {
+    return;
+  }
+
   switch (button.getAttribute(`href`).replace(`#`, ``)) {
     case `all`:
       renderFilmsByFilter(films.slice(0, MAX_FILMS_ON_ROW));
