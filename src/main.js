@@ -212,6 +212,7 @@ const onFilterClick = (button) => {
   if (films.length === 0) {
     return;
   }
+
   switch (button.getAttribute(`href`).replace(`#`, ``)) {
     case `all`:
       renderFilmsByFilter(films.slice(0, MAX_FILMS_ON_ROW));
