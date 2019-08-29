@@ -1,4 +1,4 @@
-import {createElement} from '../dom-utils';
+import BaseComponent from './base-component';
 import {controls} from '../films';
 
 const generateFilmControlTemplate = ({name, description}, isActive) => `<button class="film-card__controls-item button film-card__controls-item--${description} ${isActive ? `film-card__controls-item--active` : ``}">Add to ${name}</button>`;
@@ -14,8 +14,9 @@ const generateFilmControlsBlockTemplate = (items, isActive) => {
   return filmControlsBlockTemplate;
 };
 
-export default class Film {
+export default class Film extends BaseComponent {
   constructor(film) {
+    super();
     this._id = film.id;
     this._name = film.name;
     this._poster = film.poster;
@@ -28,7 +29,6 @@ export default class Film {
     this._isAdded = film.isAdded;
     this._isWatched = film.isWatched;
     this._isFavorite = film.isFavorite;
-    this._element = null;
   }
 
   get template() {
@@ -45,25 +45,6 @@ export default class Film {
     <a class="film-card__comments">${this._comments.length} comments</a>
     ${generateFilmControlsBlockTemplate(controls, [this._isAdded, this._isWatched, this._isFavorite])}
   </article>`.trim();
-  }
-
-  get element() {
-    if (!this._element) {
-      this._element = createElement(this.template);
-    }
-
-    return this._element;
-  }
-
-  renderElement(container, position = `beforeend`) {
-    container.insertAdjacentElement(position, this.element);
-  }
-
-  removeElement() {
-    if (this._element) {
-      this._element.remove();
-      this._element = null;
-    }
   }
 }
 

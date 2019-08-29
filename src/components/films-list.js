@@ -1,22 +1,23 @@
-import {generateShowMoreButtonTemplate} from './show-more-button';
-import {generateNoFilmsTemplate} from './no-films';
-import {films} from '../data';
+import BaseComponent from './base-component';
+import NoFilms from './no-films';
+import FilmsListContainer from './films-list-container';
 
-const generateFilmsContainer = () => films.length > 0 ? `<div class="films-list__container"></div>` : `${generateNoFilmsTemplate()}`;
-
-const generateFilmListTemplate = (title = `All movies. Upcoming`, isExtra = false) => {
-  if (isExtra && films.length === 0) {
-    return ``;
+export default class FilmsList extends BaseComponent {
+  constructor(films, name, isExtra = false) {
+    super();
+    this._name = name;
+    this._isExtra = isExtra;
+    this._films = films;
   }
 
-  const filmListTemplate =
-  `<section class="films-list${isExtra ? `--extra` : ``}" data-name="${title}">
-  <h2 class="films-list__title ${!isExtra ? `visually-hidden` : ``}">${title}</h2>
-  ${generateFilmsContainer()}
-  ${!isExtra ? generateShowMoreButtonTemplate() : ``}
-  </section>`.trim();
+  get template() {
+    if (this._isExtra && !this._films.length) {
+      return ``;
+    }
 
-  return filmListTemplate;
-};
-
-export {generateFilmListTemplate};
+    return `<section class="films-list${this._isExtra ? `--extra` : ``}" data-name="${this._name}">
+    <h2 class="films-list__title ${!this._isExtra ? `visually-hidden` : ``}">${this._name}</h2>
+    ${this._films.length ? new FilmsListContainer().template : new NoFilms().template}
+    </section>`.trim();
+  }
+}
