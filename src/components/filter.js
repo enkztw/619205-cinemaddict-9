@@ -1,4 +1,3 @@
-const getFilter = (name) => filters.find((filter) => filter.name === name);
 import BaseComponent from './base-component';
 
 export default class Filter extends BaseComponent {
