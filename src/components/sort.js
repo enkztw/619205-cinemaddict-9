@@ -1,27 +1,18 @@
-const sorts = [{
-  name: `default`,
-  isActive: true
-},
-{
-  name: `date`,
-  isActive: false
-},
-{
-  name: `rating`,
-  isActive: false
-}];
+import BaseComponent from './base-component';
 
-const generateSortItemTemplate = ({name, isActive}) => `<li><a href="#" class="sort__button${isActive ? ` sort__button--active` : ``}">Sort by ${name}</a></li>`.trim();
+export default class Sort extends BaseComponent {
+  constructor(sorts) {
+    super();
+    this._sorts = sorts;
+  }
 
-const generateSortItemsTemplate = (items) => items.map(generateSortItemTemplate).join(``);
+  sortTemplate({name, isActive}) {
+    return `<li><a href="#" class="sort__button${isActive ? ` sort__button--active` : ``}" data-name="${name}">Sort by ${name}</a></li>`;
+  }
 
-const generateSortTemplate = (items) => {
-  const sortTemplate =
-  `<ul class="sort">
-  ${generateSortItemsTemplate(items)}
-  </ul>`.trim();
-
-  return sortTemplate;
-};
-
-export {sorts, generateSortTemplate};
+  get template() {
+    return `<ul class="sort">
+    ${this._sorts.map(this.sortTemplate).join(``)}
+    </ul>`;
+  }
+}

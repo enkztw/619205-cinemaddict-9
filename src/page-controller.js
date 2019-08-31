@@ -1,5 +1,6 @@
 import FiltersBlock from './components/filters-block';
 import Filter from './components/filter';
+import Sort from './components/sort';
 import FilmsBoard from './components/films-board';
 import FilmsList from './components/films-list';
 import Film from './components/film';
@@ -23,8 +24,38 @@ export default class PageController {
     this._watchlistFilms = this._films.filter((film) => film.isAdded);
     this._favoriteFilms = this._films.filter((film) => film.isFavorite);
 
+    this._filters = [
+      {name: `all`, title: `All movies`, isActive: true},
+      {name: `watchlist`, title: `Watchlist`, count: this._watchlistFilms.length},
+      {name: `history`, title: `History`, count: this._watchedFilms.length},
+      {name: `favorites`, title: `Favorites`, count: this._favoriteFilms.length},
+      {name: `stats`, title: `Stats`}
+    ];
+
+    this._sorts = [
+      {name: `default`, isActive: true},
+      {name: `date`, isActive: false},
+      {name: `rating`, isActive: false}
+    ];
+
+    this._filmComparatorMap = {
+      default(a, b) {
+        return a.id - b.id;
+      },
+      rating(a, b) {
+        return b.rating - a.rating;
+      },
+      comments(a, b) {
+        return b.comments.length - a.comments.length;
+      },
+      date(a, b) {
+        return b.date - a.date;
+      }
+    };
+
     this._userRank = new UserRank(this._watchedFilms);
     this._filtersBlock = new FiltersBlock();
+    this._sort = new Sort(this._sorts);
     this._filmsBoard = new FilmsBoard();
     this._statistic = new Statistic(this._watchedFilms);
     this._filmsList = new FilmsList(this._films, `All movies. Upcoming`);
@@ -34,30 +65,6 @@ export default class PageController {
 
     this._currentFilmsCountOnBoard = 0;
     this._currentFilter = `all`;
-
-    this._filters = [
-      {name: `all`, title: `All movies`, isActive: true},
-      {name: `watchlist`, title: `Watchlist`, count: this._watchlistFilms.length},
-      {name: `history`, title: `History`, count: this._watchedFilms.length},
-      {name: `favorites`, title: `Favorites`, count: this._favoriteFilms.length},
-      {name: `stats`, title: `Stats`}
-    ];
-
-    this._filmLoadMap = {
-      all: this._films,
-      watchlist: this._watchlistFilms,
-      history: this._watchedFilms,
-      favorites: this._favoriteFilms
-    };
-
-    this._filmComparatorMap = {
-      rating(a, b) {
-        return b.rating - a.rating;
-      },
-      comments(a, b) {
-        return b.comments.length - a.comments.length;
-      }
-    };
   }
 
   renderElement(container, element, position = `beforeend`) {
@@ -69,7 +76,7 @@ export default class PageController {
     const onShowMoreButtonClick = () => {
       this._currentFilmsCountOnBoard = this._filmsList.element.querySelectorAll(`.film-card`).length;
 
-      for (const film of this._filmLoadMap[this._currentFilter].slice(this._currentFilmsCountOnBoard, this._currentFilmsCountOnBoard + MAX_FILMS_ON_ROW)) {
+      for (const film of this._currentFilms.slice(this._currentFilmsCountOnBoard, this._currentFilmsCountOnBoard + MAX_FILMS_ON_ROW)) {
         this._renderFilm(film, this._filmsList.element.querySelector(`.films-list__container`));
       }
 
@@ -78,11 +85,37 @@ export default class PageController {
       }
     };
 
+    const onSortClick = (evt) => {
+      evt.preventDefault();
+      const sort = evt.target;
+      if (evt.target.tagName.toLowerCase() !== `a`) {
+        return;
+      }
+
+      this._clearButtonsActiveState(this._sort.element.querySelectorAll(`.sort__button`), `sort__button--active`);
+      sort.classList.add(`sort__button--active`);
+
+      const sortName = sort.getAttribute(`data-name`);
+      const sortedFilms = this._sortFilms(sortName);
+      this._currentFilms = sortedFilms;
+
+      this._filmsList.element.querySelector(`.films-list__container`).innerHTML = ``;
+
+      for (const film of this._currentFilms.slice(0, MAX_FILMS_ON_ROW)) {
+        this._renderFilm(film, this._filmsList.element.querySelector(`.films-list__container`));
+      }
+
+      this._showMoreButton.element.classList.remove(`visually-hidden`);
+
+    };
+
     this._showMoreButton.element.addEventListener(`click`, onShowMoreButtonClick);
+    this._sort.element.addEventListener(`click`, onSortClick);
 
     // Containers & elements
     this.renderElement(this._header, this._userRank.element);
     this.renderElement(this._container, this._filtersBlock.element, `afterbegin`);
+    this.renderElement(this._container, this._sort.element);
     this.renderElement(this._container, this._filmsBoard.element);
     this.renderElement(this._container, this._statistic.element);
     this.renderElement(this._filmsBoard.element, this._filmsList.element);
@@ -102,8 +135,8 @@ export default class PageController {
     }
 
     // Extra films
-    const topRatedFilms = this._sortExtraFilms(`rating`);
-    const mostCommentedFilms = this._sortExtraFilms(`comments`);
+    const topRatedFilms = this._sortFilms(`rating`);
+    const mostCommentedFilms = this._sortFilms(`comments`);
 
     for (const film of topRatedFilms.slice(0, 2)) {
       this._renderFilm(film, this._topRatedFilmsList.element.querySelector(`.films-list__container`));
@@ -114,9 +147,9 @@ export default class PageController {
     }
   }
 
-  _clearFiltersActiveState() {
-    for (const filter of this._filtersBlock.element.querySelectorAll(`.main-navigation__item`)) {
-      filter.classList.remove(`main-navigation__item--active`);
+  _clearButtonsActiveState(buttons, className) {
+    for (const button of buttons) {
+      button.classList.remove(className);
     }
   }
 
@@ -124,7 +157,12 @@ export default class PageController {
     const filter = new Filter(name, title, isActive, count);
 
     const onFilterClick = () => {
-      this._clearFiltersActiveState();
+      if (!this._sort.element.querySelector(`.sort__button`).classList.contains(`.sort__button--active`)) {
+        this._clearButtonsActiveState(this._sort.element.querySelectorAll(`.sort__button`), `sort__button--active`);
+        this._sort.element.querySelector(`.sort__button`).classList.add(`sort__button--active`);
+      }
+
+      this._clearButtonsActiveState(this._filtersBlock.element.querySelectorAll(`.main-navigation__item`), `main-navigation__item--active`);
       filter.element.classList.add(`main-navigation__item--active`);
 
       this._filmsBoard.element.classList.remove(`visually-hidden`);
@@ -226,8 +264,8 @@ export default class PageController {
     film.renderElement(container);
   }
 
-  _sortExtraFilms(by) {
-    const filmsCopy = [...this._films];
+  _sortFilms(by) {
+    const filmsCopy = [...this._currentFilms];
     return filmsCopy.sort(this._filmComparatorMap[by]);
   }
 }
