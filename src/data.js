@@ -3,7 +3,7 @@ import {getRandomElement} from './utils';
 import {getRandomBoolean} from './utils';
 import {getShuffledArray} from './utils';
 
-const FILMS_AMOUNT = 9;
+const FILMS_AMOUNT = 20;
 
 const names = [`A Beautiful Mind`, `Atonement`, `The Great Gatsby`, `Once Upon a Time ... in Hollywood`, `Jagten`, `Dunkirk`];
 const posters = [`a-beautiful-mind.jpg`, `atonement.jpg`, `the-great-gatsby.jpg`, `once-upon-a-time-in-hollywood.jpg`, `jagten.jpg`, `dunkirk.jpg`];

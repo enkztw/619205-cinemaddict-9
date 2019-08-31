@@ -55,7 +55,7 @@ export default class Statistic extends UserRank {
     return `<p class="statistic__rank">
     Your rank 
     <img class="statistic__img" src="images/${this._avatar}" alt="Avatar" width="35" height="35"> 
-    <span class="statistic__rank-label">${this._rank}</span>
+    <span class="statistic__rank-label">${this.userRank}</span>
   </p>`;
   }
 
