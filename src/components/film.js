@@ -1,7 +1,7 @@
 import BaseComponent from './base-component';
 import {controls} from '../films';
 
-const generateFilmControlTemplate = ({name, description}, isActive) => `<button class="film-card__controls-item button film-card__controls-item--${description} ${isActive ? `film-card__controls-item--active` : ``}">Add to ${name}</button>`;
+const generateFilmControlTemplate = ({name, description}, isActive) => `<button class="film-card__controls-item button film-card__controls-item--${description} ${isActive ? `film-card__controls-item--active` : ``}" data-name="${name}">Add to ${name}</button>`;
 
 const generateFilmControlsTemplate = (items, isActive) => items.map((item, index) => generateFilmControlTemplate(item, isActive[index])).join(``);
 
@@ -29,6 +29,8 @@ export default class Film extends BaseComponent {
     this._isAdded = film.isAdded;
     this._isWatched = film.isWatched;
     this._isFavorite = film.isFavorite;
+
+    this._addEventListeners();
   }
 
   get template() {
@@ -45,6 +47,15 @@ export default class Film extends BaseComponent {
     <a class="film-card__comments">${this._comments.length} comments</a>
     ${generateFilmControlsBlockTemplate(controls, [this._isAdded, this._isWatched, this._isFavorite])}
   </article>`.trim();
+  }
+
+  _addEventListeners() {
+
+    const onControlClick = (evt) => evt.target.classList.toggle(`film-card__controls-item--active`);
+
+    for (const control of this.element.querySelectorAll(`.film-card__controls-item`)) {
+      control.addEventListener(`click`, onControlClick);
+    }
   }
 }
 

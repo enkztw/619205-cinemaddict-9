@@ -66,12 +66,16 @@ const generateFilmData = (id) => {
     isAdded: getRandomBoolean(),
     isWatched: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
-    userScore: getRandomNumber(1, 9),
+    userScore: ``,
     director: getRandomElement(directors),
     writers: new Set(getShuffledArray(actors).slice(0, 3)),
     actors: new Set(getShuffledArray(actors).slice(0, 3)),
     country: getRandomElement(countries),
   };
+
+  if (film.isWatched) {
+    film.userScore = getRandomNumber(1, 9);
+  }
 
   return film;
 };
