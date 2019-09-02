@@ -44,7 +44,7 @@ const generateComment = () => {
     author: getRandomElement(directors),
     comment: getRandomElement(comments),
     reaction: getRandomElement(reactions),
-    ago: getRandomNumber(0, 69)
+    ago: new Date(new Date().getTime() + getRandomNumber(-604800000, 604800000))
   };
 
   return comment;

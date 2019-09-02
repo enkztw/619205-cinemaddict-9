@@ -18,7 +18,9 @@ export default class PageController {
     this._footer = footer;
     this._films = films;
 
+    this._subscribers = [];
     this._onDataChange = this._onDataChange.bind(this);
+    this._onChangeView = this._onChangeView.bind(this);
 
     this._currentFilms = this._films;
     this._watchedFilms = this._films.filter((film) => film.isWatched);
@@ -66,6 +68,7 @@ export default class PageController {
 
     this._currentFilmsCountOnBoard = 0;
     this._currentFilter = `all`;
+
   }
 
   renderElement(container, element, position = `beforeend`) {
@@ -153,6 +156,8 @@ export default class PageController {
 
     this._currentFilms[index] = newData;
 
+    console.log(newData);
+
     // All films
     this._renderFilms(this._filmsList.element.querySelector(`.films-list__container`), this._currentFilms, this._filmsList.element.querySelector(`.films-list__container`).childNodes.length);
 
@@ -162,6 +167,12 @@ export default class PageController {
 
     const mostCommentedFilms = this._sortFilms(`comments`);
     this._renderFilms(this._mostCommentedFilmsList.element.querySelector(`.films-list__container`), mostCommentedFilms, 2);
+  }
+
+  _onChangeView() {
+    for (const subscriber of this._subscribers) {
+      subscriber();
+    }
   }
 
   _clearButtonsActiveState(buttons, className) {
@@ -244,7 +255,7 @@ export default class PageController {
   _renderFilm(film, container) {
     const filmController = new FilmController(container, this._footer, film, this._onDataChange, this._onChangeView);
 
-    // this._subscribers.push(taskController.setDefaultView.bind(taskController));
+    this._subscribers.push(filmController.setDefaultView.bind(filmController));
   }
 
   _sortFilms(by) {
