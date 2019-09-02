@@ -63,7 +63,7 @@ export default class FilmController {
     };
 
     const onCtrlPressed = (evt) => {
-      if (evt.key === `Meta`) {
+      if (evt.key === `Meta` || evt.key === `Control`) {
         this._isCtrlPressed = true;
       }
 
@@ -75,7 +75,7 @@ export default class FilmController {
     };
 
     const onCtrlUnpressed = (evt) => {
-      if (evt.key === `Meta`) {
+      if (evt.key === `Meta` || evt.key === `Control`) {
         this._isCtrlPressed = false;
       }
     };

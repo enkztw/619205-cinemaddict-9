@@ -81,7 +81,7 @@ const generateFilmCommentTemplate = ({author, comment, reaction, ago}) =>
     <p class="film-details__comment-text">${comment}</p>
     <p class="film-details__comment-info">
       <span class="film-details__comment-author">${author}</span>
-      <span class="film-details__comment-day">${ago.getFullYear()}/${ago.getMonth()}/${ago.getDate()}</span>
+      <span class="film-details__comment-day">${ago.getFullYear()}/${ago.getMonth() + 1}/${ago.getDate()}</span>
       <button class="film-details__comment-delete">Delete</button>
     </p>
   </div>
@@ -282,7 +282,7 @@ export default class FilmDetailed extends BaseComponent {
     };
 
     const onCtrlPressed = (evt) => {
-      if (evt.key === `Meta`) {
+      if (evt.key === `Meta` || evt.key === `Control`) {
         this._isCtrlPressed = true;
       }
 
@@ -315,7 +315,7 @@ export default class FilmDetailed extends BaseComponent {
     };
 
     const onCtrlUnpressed = (evt) => {
-      if (evt.key === `Meta`) {
+      if (evt.key === `Meta` || evt.key === `Control`) {
         this._isCtrlPressed = false;
       }
     };
