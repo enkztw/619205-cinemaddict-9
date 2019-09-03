@@ -766,6 +766,12 @@ button {
   background-color: rgba(255, 255, 255, 0.1);
   margin-right: 14px;
 }
+
+.film-details__add-emoji-label--error {
+  border: dashed 1px rgba(255, 0, 0, 0.9);
+  box-shadow: 0 0 10px 6px rgba(255, 0, 0, 0.9);
+}
+
 .film-details__emoji-label {
   width: 40px;
   height: 40px;

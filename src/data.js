@@ -3,7 +3,8 @@ import {getRandomElement} from './utils';
 import {getRandomBoolean} from './utils';
 import {getShuffledArray} from './utils';
 
-const FILMS_AMOUNT = 20;
+const FILMS_AMOUNT = 15;
+const weekInMs = 604800000;
 
 const names = [`A Beautiful Mind`, `Atonement`, `The Great Gatsby`, `Once Upon a Time ... in Hollywood`, `Jagten`, `Dunkirk`];
 const posters = [`a-beautiful-mind.jpg`, `atonement.jpg`, `the-great-gatsby.jpg`, `once-upon-a-time-in-hollywood.jpg`, `jagten.jpg`, `dunkirk.jpg`];
@@ -44,7 +45,7 @@ const generateComment = () => {
     author: getRandomElement(directors),
     comment: getRandomElement(comments),
     reaction: getRandomElement(reactions),
-    ago: getRandomNumber(0, 69)
+    ago: new Date(new Date().getTime() + getRandomNumber(-weekInMs, weekInMs))
   };
 
   return comment;
@@ -66,12 +67,16 @@ const generateFilmData = (id) => {
     isAdded: getRandomBoolean(),
     isWatched: getRandomBoolean(),
     isFavorite: getRandomBoolean(),
-    userScore: getRandomNumber(1, 9),
+    userScore: ``,
     director: getRandomElement(directors),
     writers: new Set(getShuffledArray(actors).slice(0, 3)),
     actors: new Set(getShuffledArray(actors).slice(0, 3)),
     country: getRandomElement(countries),
   };
+
+  if (film.isWatched) {
+    film.userScore = getRandomNumber(1, 9);
+  }
 
   return film;
 };

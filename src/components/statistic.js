@@ -86,7 +86,14 @@ export default class Statistic extends UserRank {
 
   get totalTime() {
     const time = this._watchedFilms.map((film) => film.duration);
-    const totalTime = time.reduce((acc, curr) => ({hours: Math.floor((acc.hours + curr) / 60), minutes: (acc.minutes + curr) % 60}), {hours: 0, minutes: 0});
+    const totalTime = time.reduce((acc, curr) => {
+      acc.hours += Math.floor((acc.hours + curr) / 60);
+      acc.minutes += (acc.minutes + curr) % 60;
+      return acc;
+    }, {hours: 0, minutes: 0});
+
+    totalTime.hours += Math.floor(totalTime.minutes / 60);
+    totalTime.minutes %= 60;
 
     return totalTime;
   }

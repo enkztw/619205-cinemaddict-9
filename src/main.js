@@ -4,7 +4,7 @@ import {generateSearchTemplate} from './components/search';
 
 import {films} from './data';
 
-import PageController from './page-controller';
+import PageController from './controllers/page-controller';
 
 const header = document.querySelector(`.header`);
 const main = document.querySelector(`.main`);
