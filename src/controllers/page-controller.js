@@ -134,14 +134,23 @@ export default class PageController {
     }
 
     // All films
-    this._renderFilms(this._filmsList.element.querySelector(`.films-list__container`), this._currentFilms, MAX_FILMS_ON_ROW);
+    this._renderFilms(
+        this._filmsList.element.querySelector(`.films-list__container`),
+        this._currentFilms,
+        MAX_FILMS_ON_ROW);
 
     // Extra films
     const topRatedFilms = this._sortFilms(`rating`);
-    this._renderFilms(this._topRatedFilmsList.element.querySelector(`.films-list__container`), topRatedFilms, 2);
+    this._renderFilms(
+        this._topRatedFilmsList.element.querySelector(`.films-list__container`),
+        topRatedFilms,
+        2);
 
     const mostCommentedFilms = this._sortFilms(`comments`);
-    this._renderFilms(this._mostCommentedFilmsList.element.querySelector(`.films-list__container`), mostCommentedFilms, 2);
+    this._renderFilms(
+        this._mostCommentedFilmsList.element.querySelector(`.films-list__container`),
+        mostCommentedFilms,
+        2);
   }
 
   _renderFilms(container, films, count) {
@@ -159,14 +168,20 @@ export default class PageController {
     console.log(newData);
 
     // All films
-    this._renderFilms(this._filmsList.element.querySelector(`.films-list__container`), this._currentFilms, this._filmsList.element.querySelector(`.films-list__container`).childNodes.length);
+    this._renderFilms(this._filmsList.element.querySelector(`.films-list__container`),
+        this._currentFilms,
+        this._filmsList.element.querySelector(`.films-list__container`).childNodes.length);
 
     // Extra films
     const topRatedFilms = this._sortFilms(`rating`);
-    this._renderFilms(this._topRatedFilmsList.element.querySelector(`.films-list__container`), topRatedFilms, 2);
+    this._renderFilms(this._topRatedFilmsList.element.querySelector(`.films-list__container`),
+        topRatedFilms,
+        2);
 
     const mostCommentedFilms = this._sortFilms(`comments`);
-    this._renderFilms(this._mostCommentedFilmsList.element.querySelector(`.films-list__container`), mostCommentedFilms, 2);
+    this._renderFilms(this._mostCommentedFilmsList.element.querySelector(`.films-list__container`),
+        mostCommentedFilms,
+        2);
   }
 
   _onChangeView() {
@@ -185,12 +200,15 @@ export default class PageController {
     const filter = new Filter(name, title, isActive, count);
 
     const onFilterClick = () => {
-      if (!this._sort.element.querySelector(`.sort__button`).classList.contains(`.sort__button--active`)) {
+      const sortButton = this._sort.element.querySelector(`.sort__button`);
+      if (!sortButton.classList.contains(`.sort__button--active`)) {
         this._clearButtonsActiveState(this._sort.element.querySelectorAll(`.sort__button`), `sort__button--active`);
-        this._sort.element.querySelector(`.sort__button`).classList.add(`sort__button--active`);
+        sortButton.classList.add(`sort__button--active`);
       }
 
-      this._clearButtonsActiveState(this._filtersBlock.element.querySelectorAll(`.main-navigation__item`), `main-navigation__item--active`);
+      this._clearButtonsActiveState(
+          this._filtersBlock.element.querySelectorAll(`.main-navigation__item`),
+          `main-navigation__item--active`);
       filter.element.classList.add(`main-navigation__item--active`);
 
       this._filmsBoard.element.classList.remove(`visually-hidden`);

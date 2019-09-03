@@ -234,11 +234,8 @@ export default class FilmDetailed extends BaseComponent {
   addEventListeners() {
 
     const onScoreChange = (evt) => {
-      if (evt.target.checked) {
-        this.element.querySelector(`.film-details__user-rating`).textContent = `Your rate ${evt.target.value}`;
-      } else {
-        this.element.querySelector(`.film-details__user-rating`).textContent = ``;
-      }
+      const scoreButton = this.element.querySelector(`.film-details__user-rating`);
+      scoreButton.textContent = evt.target.checked ? `Your rate ${evt.target.value}` : ``;
     };
 
     const onScoreReset = () => {
@@ -267,8 +264,7 @@ export default class FilmDetailed extends BaseComponent {
 
     const onEmojiClick = (evt) => {
       const emojiBlock = this.element.querySelector(`.film-details__add-emoji-label`);
-      emojiBlock.style.border = `dashed 1px #979797`;
-      emojiBlock.style.boxShadow = ``;
+      emojiBlock.classList.remove(`film-details__add-emoji-label--error`);
       emojiBlock.innerHTML = ``;
 
       const emojiElement = document.createElement(`img`);
@@ -282,14 +278,14 @@ export default class FilmDetailed extends BaseComponent {
     };
 
     const onCtrlPressed = (evt) => {
-      if (evt.key === `Meta` || evt.key === `Control`) {
+      if (evt.metaKey || evt.ctrlKey) {
         this._isCtrlPressed = true;
       }
 
       if (this._isCtrlPressed && evt.key === `Enter`) {
-        if (!this.element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`)) {
-          this.element.querySelector(`.film-details__add-emoji-label`).style.border = `dashed 1px rgba(255, 0, 0, 0.9)`;
-          this.element.querySelector(`.film-details__add-emoji-label`).style.boxShadow = `0 0 10px 6px rgba(255, 0, 0, 0.9)`;
+        const emojiBlock = this.element.querySelector(`.film-details__add-emoji-label`);
+        if (!emojiBlock.querySelector(`img`)) {
+          emojiBlock.classList.add(`film-details__add-emoji-label--error`);
 
           return;
         }
@@ -308,14 +304,13 @@ export default class FilmDetailed extends BaseComponent {
         this.element.querySelector(`.film-details__comments-count`).textContent = commentsCount + 1;
 
         // Fallback to default state
-        // this.element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`).remove();
-        // this.element.querySelector(`.film-details__comment-input`).value = ``;
-        // this.element.querySelector(`.film-details__emoji-item:checked`).checked = false;
+        this.element.querySelector(`.film-details__comment-input`).value = ``;
+        this.element.querySelector(`.film-details__emoji-item:checked`).checked = false;
       }
     };
 
     const onCtrlUnpressed = (evt) => {
-      if (evt.key === `Meta` || evt.key === `Control`) {
+      if (evt.metaKey || evt.ctrlKey) {
         this._isCtrlPressed = false;
       }
     };

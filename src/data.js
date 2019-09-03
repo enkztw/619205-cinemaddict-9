@@ -4,6 +4,7 @@ import {getRandomBoolean} from './utils';
 import {getShuffledArray} from './utils';
 
 const FILMS_AMOUNT = 15;
+const weekInMs = 604800000;
 
 const names = [`A Beautiful Mind`, `Atonement`, `The Great Gatsby`, `Once Upon a Time ... in Hollywood`, `Jagten`, `Dunkirk`];
 const posters = [`a-beautiful-mind.jpg`, `atonement.jpg`, `the-great-gatsby.jpg`, `once-upon-a-time-in-hollywood.jpg`, `jagten.jpg`, `dunkirk.jpg`];
@@ -44,7 +45,7 @@ const generateComment = () => {
     author: getRandomElement(directors),
     comment: getRandomElement(comments),
     reaction: getRandomElement(reactions),
-    ago: new Date(new Date().getTime() + getRandomNumber(-604800000, 604800000))
+    ago: new Date(new Date().getTime() + getRandomNumber(-weekInMs, weekInMs))
   };
 
   return comment;

@@ -49,7 +49,8 @@ export default class FilmController {
     };
 
     const onDetailedControlClick = (evt) => {
-      if (evt.target.getAttribute(`name`) === `watched` && this._filmDetailed.element.querySelector(`.form-details__middle-container`)) {
+      const scoreContainer = this._filmDetailed.element.querySelector(`.form-details__middle-container`);
+      if (evt.target.getAttribute(`name`) === `watched` && scoreContainer) {
         for (const scoreButton of this._filmDetailed.element.querySelectorAll(`.film-details__user-rating-input`)) {
           scoreButton.addEventListener(`change`, onScoreChange);
         }
@@ -63,19 +64,23 @@ export default class FilmController {
     };
 
     const onCtrlPressed = (evt) => {
-      if (evt.key === `Meta` || evt.key === `Control`) {
+      if (evt.metaKey || evt.ctrlKey) {
         this._isCtrlPressed = true;
       }
 
-      if (this._isCtrlPressed && evt.key === `Enter` && this._filmDetailed.element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`)) {
+      const isRequiredKeys = this._isCtrlPressed && evt.key === `Enter`;
+      const selectedEmoji = this._filmDetailed.element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`);
+      if (isRequiredKeys && selectedEmoji) {
         const newData = this.collectData(this._filmDetailed.element);
 
         this._onDataChange(newData, this._data);
+
+        selectedEmoji.remove();
       }
     };
 
     const onCtrlUnpressed = (evt) => {
-      if (evt.key === `Meta` || evt.key === `Control`) {
+      if (evt.metaKey || evt.ctrlKey) {
         this._isCtrlPressed = false;
       }
     };
@@ -94,15 +99,6 @@ export default class FilmController {
       // Close element
       this._filmDetailed.element.querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
 
-      // Comment field
-      this._filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`focus`, () => {
-        document.removeEventListener(`keydown`, onEscButtonClick);
-      });
-
-      this._filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`blur`, () => {
-        document.addEventListener(`keydown`, onEscButtonClick);
-      });
-
       // Control elements
       for (const control of this._filmDetailed.element.querySelectorAll(`.film-details__control-input`)) {
         control.addEventListener(`change`, onDetailedControlClick);
@@ -118,16 +114,19 @@ export default class FilmController {
       }
 
       // Comment field element
-      this._filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`focus`, () => {
+      const commentField = this._filmDetailed.element.querySelector(`.film-details__comment-input`);
+      commentField.addEventListener(`focus`, () => {
         this._isCtrlPressed = false;
-        this._filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, onCtrlPressed);
-        this._filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`keyup`, onCtrlUnpressed);
+        commentField.addEventListener(`keydown`, onCtrlPressed);
+        commentField.addEventListener(`keyup`, onCtrlUnpressed);
+        document.removeEventListener(`keydown`, onEscButtonClick);
       });
 
-      this._filmDetailed.element.querySelector(`.film-details__comment-input`).addEventListener(`blur`, () => {
+      commentField.addEventListener(`blur`, () => {
         this._isCtrlPressed = false;
-        this._filmDetailed.element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, onCtrlPressed);
-        this._filmDetailed.element.querySelector(`.film-details__comment-input`).removeEventListener(`keyup`, onCtrlUnpressed);
+        commentField.removeEventListener(`keydown`, onCtrlPressed);
+        commentField.removeEventListener(`keyup`, onCtrlUnpressed);
+        document.addEventListener(`keydown`, onEscButtonClick);
       });
 
       // Comment delete buttons
@@ -139,7 +138,9 @@ export default class FilmController {
     };
 
     const onControlClick = (evt) => {
-      const checkedControls = Array.from(evt.target.querySelectorAll(`.film-card__controls-item--active`)).map((control) => control.getAttribute(`data-name`));
+      const checkedControls = Array
+      .from(evt.target.querySelectorAll(`.film-card__controls-item--active`))
+      .map((control) => control.getAttribute(`data-name`));
 
       const newData = checkedControls.reduce((acc, curr) => {
         acc[this._filmStatusMap[curr]] = true;
@@ -178,9 +179,13 @@ export default class FilmController {
   }
 
   collectData(element) {
-    const checkedControls = Array.from(element.querySelectorAll(`.film-details__control-input:checked`)).map((control) => control.getAttribute(`name`));
-    const userScore = element.querySelector(`.film-details__user-rating-input:checked`) ? element.querySelector(`.film-details__user-rating-input:checked`).value : ``;
-    const comments = Array.from(element.querySelectorAll(`.film-details__comment`)).map((comment) => {
+    const checkedControls = Array
+    .from(element.querySelectorAll(`.film-details__control-input:checked`))
+    .map((control) => control.getAttribute(`name`));
+
+    const comments = Array.
+    from(element.querySelectorAll(`.film-details__comment`)).
+    map((comment) => {
       return {
         author: comment.querySelector(`.film-details__comment-author`).textContent,
         comment: comment.querySelector(`.film-details__comment-text`).textContent,
@@ -188,6 +193,10 @@ export default class FilmController {
         ago: new Date(comment.querySelector(`.film-details__comment-day`).textContent)
       };
     });
+
+    const currentScore = element.querySelector(`.film-details__user-rating-input:checked`);
+    const userScore = currentScore ? currentScore.value : ``;
+
     const newData = checkedControls.reduce((acc, curr) => {
       acc[this._filmStatusMap[curr]] = true;
 
