@@ -120,8 +120,6 @@ export default class FilmDetailed extends BaseComponent {
     this._writers = film.writers;
     this._actors = film.actors;
     this._country = film.country;
-
-    this._isCtrlPressed = false;
   }
 
   get template() {
@@ -277,12 +275,15 @@ export default class FilmDetailed extends BaseComponent {
       emojiBlock.insertAdjacentElement(`beforeend`, emojiElement);
     };
 
-    const onCtrlPressed = (evt) => {
-      if (evt.metaKey || evt.ctrlKey) {
-        this._isCtrlPressed = true;
-      }
+    const onCommentDelete = (evt) => {
+      evt.target.closest(`.film-details__comment`).remove();
+      const commentsCount = parseInt(this.element.querySelector(`.film-details__comments-count`).textContent, 10);
 
-      if (this._isCtrlPressed && evt.key === `Enter`) {
+      this.element.querySelector(`.film-details__comments-count`).textContent = commentsCount - 1;
+    };
+
+    const onCommentSubmit = (evt) => {
+      if (evt.ctrlKey && evt.key === `Enter`) {
         const emojiBlock = this.element.querySelector(`.film-details__add-emoji-label`);
         if (!emojiBlock.querySelector(`img`)) {
           emojiBlock.classList.add(`film-details__add-emoji-label--error`);
@@ -309,19 +310,6 @@ export default class FilmDetailed extends BaseComponent {
       }
     };
 
-    const onCtrlUnpressed = (evt) => {
-      if (evt.metaKey || evt.ctrlKey) {
-        this._isCtrlPressed = false;
-      }
-    };
-
-    const onCommentDelete = (evt) => {
-      evt.target.closest(`.film-details__comment`).remove();
-      const commentsCount = parseInt(this.element.querySelector(`.film-details__comments-count`).textContent, 10);
-
-      this.element.querySelector(`.film-details__comments-count`).textContent = commentsCount - 1;
-    };
-
     // Score elements
     if (this.element.querySelector(`.form-details__middle-container`)) {
       for (const scoreButton of this.element.querySelectorAll(`.film-details__user-rating-input`)) {
@@ -341,15 +329,11 @@ export default class FilmDetailed extends BaseComponent {
 
     // Comment field element
     this.element.querySelector(`.film-details__comment-input`).addEventListener(`focus`, () => {
-      this._isCtrlPressed = false;
-      this.element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, onCtrlPressed);
-      this.element.querySelector(`.film-details__comment-input`).addEventListener(`keyup`, onCtrlUnpressed);
+      this.element.querySelector(`.film-details__comment-input`).addEventListener(`keydown`, onCommentSubmit);
     });
 
     this.element.querySelector(`.film-details__comment-input`).addEventListener(`blur`, () => {
-      this._isCtrlPressed = false;
-      this.element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, onCtrlPressed);
-      this.element.querySelector(`.film-details__comment-input`).removeEventListener(`keyup`, onCtrlUnpressed);
+      this.element.querySelector(`.film-details__comment-input`).removeEventListener(`keydown`, onCommentSubmit);
     });
 
     // Delete comment buttons

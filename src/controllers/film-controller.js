@@ -17,8 +17,6 @@ export default class FilmController {
       favorite: `isFavorite`
     };
 
-    this._isCtrlPressed = false;
-
     this.init();
   }
 
@@ -63,12 +61,8 @@ export default class FilmController {
       this._onDataChange(newData, this._data);
     };
 
-    const onCtrlPressed = (evt) => {
-      if (evt.metaKey || evt.ctrlKey) {
-        this._isCtrlPressed = true;
-      }
-
-      const isRequiredKeys = this._isCtrlPressed && evt.key === `Enter`;
+    const onCommentSubmit = (evt) => {
+      const isRequiredKeys = (evt.ctrlKey || evt.metaKey) && evt.key === `Enter`;
       const selectedEmoji = this._filmDetailed.element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`);
       if (isRequiredKeys && selectedEmoji) {
         const newData = this.collectData(this._filmDetailed.element);
@@ -76,12 +70,6 @@ export default class FilmController {
         this._onDataChange(newData, this._data);
 
         selectedEmoji.remove();
-      }
-    };
-
-    const onCtrlUnpressed = (evt) => {
-      if (evt.metaKey || evt.ctrlKey) {
-        this._isCtrlPressed = false;
       }
     };
 
@@ -116,16 +104,12 @@ export default class FilmController {
       // Comment field element
       const commentField = this._filmDetailed.element.querySelector(`.film-details__comment-input`);
       commentField.addEventListener(`focus`, () => {
-        this._isCtrlPressed = false;
-        commentField.addEventListener(`keydown`, onCtrlPressed);
-        commentField.addEventListener(`keyup`, onCtrlUnpressed);
+        commentField.addEventListener(`keydown`, onCommentSubmit);
         document.removeEventListener(`keydown`, onEscButtonClick);
       });
 
       commentField.addEventListener(`blur`, () => {
-        this._isCtrlPressed = false;
-        commentField.removeEventListener(`keydown`, onCtrlPressed);
-        commentField.removeEventListener(`keyup`, onCtrlUnpressed);
+        commentField.removeEventListener(`keydown`, onCommentSubmit);
         document.addEventListener(`keydown`, onEscButtonClick);
       });
 
