@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {getRandomNumber} from './utils';
 import {getRandomElement} from './utils';
 import {getRandomBoolean} from './utils';
@@ -8,21 +9,6 @@ const weekInMs = 604800000;
 
 const names = [`A Beautiful Mind`, `Atonement`, `The Great Gatsby`, `Once Upon a Time ... in Hollywood`, `Jagten`, `Dunkirk`];
 const posters = [`a-beautiful-mind.jpg`, `atonement.jpg`, `the-great-gatsby.jpg`, `once-upon-a-time-in-hollywood.jpg`, `jagten.jpg`, `dunkirk.jpg`];
-
-const months = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
-];
 
 const descriptions = [
   `After John Nash, a brilliant but asocial mathematician, accepts secret work in cryptography, his life takes a turn for the nightmarish.`,
@@ -45,7 +31,7 @@ const generateComment = () => {
     author: getRandomElement(directors),
     comment: getRandomElement(comments),
     reaction: getRandomElement(reactions),
-    ago: new Date(new Date().getTime() + getRandomNumber(-weekInMs, weekInMs))
+    ago: moment(`${getRandomNumber(2018, 2019)}-0${getRandomNumber(1, 9)}-${getRandomNumber(10, 30)}`)
   };
 
   return comment;
@@ -59,7 +45,7 @@ const generateFilmData = (id) => {
     name: getRandomElement(names),
     poster: getRandomElement(posters),
     rating: parseInt(((getRandomNumber(0, 8) + parseInt(Math.random() * 100, 10) / 100).toFixed(2) * 100), 10) / 100,
-    date: new Date(`${getRandomElement(months)} ${getRandomNumber(1, 31)}, ${getRandomNumber(1995, 2020)}`),
+    date: moment(`${getRandomNumber(1995, 2019)}-0${getRandomNumber(1, 9)}-${getRandomNumber(10, 30)}`),
     duration: getRandomNumber(60, 180),
     genres: new Set(getShuffledArray(genres).slice(0, 3)),
     description: getRandomElement(descriptions),
@@ -85,5 +71,4 @@ const genreateFilmsData = (amount) => [...Array(amount)].map((film, id) => gener
 
 const films = genreateFilmsData(FILMS_AMOUNT);
 
-export {months};
 export {films};

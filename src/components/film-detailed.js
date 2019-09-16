@@ -1,5 +1,5 @@
+import moment from 'moment';
 import BaseComponent from './base-component';
-import {months} from '../data';
 import {controls} from '../films';
 
 // Genres
@@ -81,7 +81,7 @@ const generateFilmCommentTemplate = ({author, comment, reaction, ago}) =>
     <p class="film-details__comment-text">${comment}</p>
     <p class="film-details__comment-info">
       <span class="film-details__comment-author">${author}</span>
-      <span class="film-details__comment-day">${ago.getFullYear()}/${ago.getMonth() + 1}/${ago.getDate()}</span>
+      <span class="film-details__comment-day">${ago.year()}/${ago.month() + 1}/${ago.date()}</span>
       <button class="film-details__comment-delete">Delete</button>
     </p>
   </div>
@@ -164,7 +164,7 @@ export default class FilmDetailed extends BaseComponent {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${this._date.getDate()} ${months[this._date.getMonth()]} ${this._date.getFullYear()}</td>
+                <td class="film-details__cell">${this._date.date()} ${this._date.format(`MMMM`)} ${this._date.year()}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
@@ -283,7 +283,7 @@ export default class FilmDetailed extends BaseComponent {
     };
 
     const onCommentSubmit = (evt) => {
-      if (evt.ctrlKey && evt.key === `Enter`) {
+      if ((evt.ctrlKey || evt.metaKey) && evt.key === `Enter`) {
         const emojiBlock = this.element.querySelector(`.film-details__add-emoji-label`);
         if (!emojiBlock.querySelector(`img`)) {
           emojiBlock.classList.add(`film-details__add-emoji-label--error`);
@@ -297,7 +297,7 @@ export default class FilmDetailed extends BaseComponent {
           author: `Max Kuznetsov TEMPORARY`,
           comment: this.element.querySelector(`.film-details__comment-input`).value,
           reaction: this.element.querySelector(`.film-details__add-emoji-label`).querySelector(`img`).getAttribute(`data-name`),
-          ago: new Date()
+          ago: moment()
         };
 
         commentsList.insertAdjacentHTML(`beforeend`, generateFilmCommentTemplate(comment));

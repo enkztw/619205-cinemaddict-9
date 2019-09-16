@@ -1,3 +1,4 @@
+import moment from 'moment';
 import BaseComponent from './base-component';
 import {controls} from '../films';
 
@@ -38,7 +39,7 @@ export default class Film extends BaseComponent {
     <h3 class="film-card__title">${this._name}</h3>
     <p class="film-card__rating">${this._rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${this._date.getFullYear()}</span>
+      <span class="film-card__year">${moment(this._date).year()}</span>
       <span class="film-card__duration">${Math.floor(this._duration / 60)}h ${this._duration % 60}m</span>
       <span class="film-card__genre">${Array.from(this._genres)[0]}</span>
     </p>

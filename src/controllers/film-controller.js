@@ -1,3 +1,4 @@
+import moment from 'moment';
 import Film from '../components/film';
 import FilmDetailed from '../components/film-detailed';
 
@@ -174,7 +175,7 @@ export default class FilmController {
         author: comment.querySelector(`.film-details__comment-author`).textContent,
         comment: comment.querySelector(`.film-details__comment-text`).textContent,
         reaction: comment.querySelector(`.film-details__comment-emoji`).querySelector(`img`).getAttribute(`data-name`),
-        ago: new Date(comment.querySelector(`.film-details__comment-day`).textContent)
+        ago: moment(new Date(comment.querySelector(`.film-details__comment-day`).textContent))
       };
     });
 
